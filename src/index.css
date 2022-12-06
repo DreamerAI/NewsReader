@@ -25,6 +25,14 @@ body {
   line-height: 1.5;
   color: #121212;
 }
+
+#root {
+  height: 100%;
+  display: flex;
+  width: 100%;
+}
+
+/*
 textarea,
 input,
 button {
@@ -243,6 +251,8 @@ i {
   flex: 1;
   padding: 2rem 4rem;
   width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #detail.loading {
@@ -380,4 +390,4 @@ i {
   align-items: center;
   justify-content: center;
   width: 100%;
-}
+} */

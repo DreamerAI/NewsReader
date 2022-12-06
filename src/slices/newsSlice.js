@@ -8,15 +8,17 @@ const selectTitles = ({ title, id } = {}) => ({
   title,
   id,
 });
-const selectFields = ({ id, by, url, time, title, text } = {}) => ({
+const selectFields = ({ id, by, url, time, title, kids, text } = {}) => ({
   id,
   by,
   url,
   time,
   title,
+  kids,
   text,
 });
 
+// GETTING ARRAY OF NEWS OBJECTS
 export const fetchNews = createAsyncThunk(
   'news/fetchNews',
   async function (_, { rejectWithValue }) {
@@ -25,7 +27,6 @@ export const fetchNews = createAsyncThunk(
       // Check for error
       const { data } = response;
       let newsArray = data.slice(0, 100);
-      console.log(newsArray);
       const promises = await Promise.all(
         newsArray.map((newsId) =>
           fetch(`https://hacker-news.firebaseio.com/v0/item/${newsId}.json`)
@@ -41,15 +42,16 @@ export const fetchNews = createAsyncThunk(
   }
 );
 
-const newPostUrl = 'https://hacker-news.firebaseio.com/v0/item/';
+// GETTING newsPostOnClick
+const newsPostUrl = 'https://hacker-news.firebaseio.com/v0/item/';
 
 export const fetchNewsById = createAsyncThunk(
   'news/fetchNewsById',
   async function (newsId, { rejectWithValue, getState, dispatch }) {
     try {
-      const response = await axios.get(`${newPostUrl + newsId}.json`);
+      const response = await axios.get(`${newsPostUrl + newsId}.json`);
       const { data } = response;
-      let newsPostData = selectFields(data);
+      const newsPostData = selectFields(data);
       dispatch(selectNewsPage(newsPostData));
       return newsPostData;
     } catch (error) {
@@ -63,19 +65,17 @@ const newsSlice = createSlice({
   initialState: {
     newsIds: [],
     newsPage: null,
+    pageStatus: null,
     newsRefreshed: true,
     status: null,
-    pageStatus: null,
     error: null,
   },
   reducers: {
     handleRefresh(state, action) {
-      console.log(state.newsRefreshed);
       state.newsRefreshed = action.payload;
     },
     selectNewsPage(state, action) {
       state.newsPage = action.payload;
-      console.log(state.newsPage);
     },
     // addTodo(state, action) {
     //   state.todos.push(action.payload);

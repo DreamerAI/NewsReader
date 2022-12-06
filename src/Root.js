@@ -1,52 +1,50 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, NavLink } from 'react-router-dom';
-import { fetchNews, fetchNewsById, handleRefresh } from './slices/newsSlice';
+import { fetchNews, handleRefresh } from './slices/newsSlice';
+
+import styles from './root.module.scss';
 
 function App() {
-  // const [newsIds, setNewsIds] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
 
-  const [newsUpdate, setNewsUpdate] = useState(true);
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
   const newsIds = useSelector((state) => state.news.newsIds);
   const { status, error, newsRefreshed } = useSelector((state) => state.news);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    window.addEventListener('resize', handleResize);
     dispatch(handleRefresh(newsRefreshed));
     dispatch(fetchNews());
     const interval = setInterval(() => {
       dispatch(fetchNews());
     }, 120000);
     return () => clearInterval(interval);
-    // async function getNewsIds() {
-    //   const response = await axios.get(newStoriesUrl);
-    //   const { data } = response;
-    //   let newsArray = data.slice(0, 100);
-    //   console.log(newsArray);
-    //   setNewsIds(newsArray);
-    //   setNewsUpdate(true);
-    // }
-    // getNewsIds();
-  }, [newsRefreshed]);
-  // const productsArray = await Promise.all(promises.map(p => p.json()))
+  }, [newsRefreshed, dispatch]);
 
   return (
-    <>
-      <div id="sidebar">
+    <div className={styles.main}>
+      <div className={styles.sidebar}>
         <h1>News</h1>
-        <div>
-          <form id="search-form" role="search">
-            <input
-              id="q"
-              aria-label="Search contacts"
-              placeholder="Search"
-              type="search"
-              name="q"
-            />
-            <div id="search-spinner" aria-hidden hidden={true} />
-            <div className="sr-only" aria-live="polite"></div>
-          </form>
+        <div className={styles.nav__input}>
+          <input
+            id="q"
+            aria-label="Search contacts"
+            placeholder="Search"
+            type="search"
+            name="q"
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
           <div>
             <button
               type="submit"
@@ -56,24 +54,31 @@ function App() {
             </button>
           </div>
         </div>
-        <nav>
+        <nav className={styles.nav}>
           <ul>
             {status === 'loading' && <h2>Loading News...</h2>}
             {error && <h2> An error occured: {error}</h2>}
-            {newsUpdate
-              ? newsIds.map((newsId, index) => (
-                  <li key={newsId.id}>
-                    <NavLink to={`news/${newsId.id}`}>{newsId.title}</NavLink>
-                  </li>
-                ))
-              : null}
+            {newsIds
+              .filter((item) => {
+                return Object.values(item)
+                  .join('')
+                  .toLowerCase()
+                  .includes(searchInput.toLowerCase());
+              })
+              .map((newsId, index) => (
+                <li key={newsId.id}>
+                  <NavLink to={`news/${newsId.id}`}>{newsId.title}</NavLink>
+                </li>
+              ))}
           </ul>
         </nav>
       </div>
-      <div id="detail">
-        <Outlet />
-      </div>
-    </>
+      {isMobile ? null : (
+        <div className={styles.detail} id="detail">
+          <Outlet />
+        </div>
+      )}
+    </div>
   );
 }
 
