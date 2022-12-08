@@ -7,23 +7,12 @@ import styles from './root.module.scss';
 
 function App() {
   const [searchInput, setSearchInput] = useState('');
-  const [isMobile, setIsMobile] = useState(false);
-
-  //choose the screen size
-  const handleResize = () => {
-    if (window.innerWidth < 720) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
 
   const newsIds = useSelector((state) => state.news.newsIds);
   const { status, error, newsRefreshed } = useSelector((state) => state.news);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
     dispatch(handleRefresh(newsRefreshed));
     dispatch(fetchNews());
     const interval = setInterval(() => {
@@ -73,11 +62,9 @@ function App() {
           </ul>
         </nav>
       </div>
-      {isMobile ? null : (
-        <div className={styles.detail} id="detail">
-          <Outlet />
-        </div>
-      )}
+      <div className={styles.detail} id="detail">
+        <Outlet />
+      </div>
     </div>
   );
 }
