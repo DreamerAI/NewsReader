@@ -28,14 +28,21 @@ function News() {
       {newsPage && (
         <>
           <div className={styles.headline}>
-            <a href={newsPage.url}>
-              <h1 className="news__title">{newsPage.title} </h1>
-            </a>
+            <h1 className="news__title">{newsPage.title} </h1>
+            <div className={styles.headline__info}>
+              <a href={newsPage.url}>Read more</a>
+
+              <p className={styles.author__name}>
+                By: {newsPage.by}&nbsp;[{newsPage.id}]&nbsp;&nbsp;
+                {new Date(newsPage.time * 1000).toLocaleDateString('en-US', {
+                  hour: 'numeric',
+                  minute: 'numeric',
+                  hourCycle: 'h23',
+                })}
+              </p>
+            </div>
           </div>
           <div className={styles.author}>
-            <p className={styles.author__name}>
-              By: {newsPage.by}&nbsp;[{newsPage.id}]
-            </p>
             <div
               dangerouslySetInnerHTML={createMarkup(newsPage.text)}
               className={styles.author__text}></div>

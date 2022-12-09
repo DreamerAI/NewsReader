@@ -8,10 +8,16 @@
 .headline {
     padding: 0;
     margin: 0;
-
     h1 {
-        margin: 0;
+        margin-top: 0;
     }
+}
+
+.author__name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #3992ff;
+    margin: 0;
 }
 
 .author {
@@ -22,22 +28,39 @@
     align-items: flex-start;
     gap: 10px;
 
-    .author__name {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #3992ff;
-        margin: 0;
-    }
-
     .author__text {
         padding: 0;
         margin: 0;
     }
 }
 
-.container a {
-    color: black;
+.headline__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media screen and (max-width: 720px) {
+        display: block;
+
+        a {
+            order: -1;
+        }
+
+        p {
+            margin-top: 20px;
+        }
+    }
+}
+
+.headline__info > a {
+    color: #3992ff;
     text-decoration: none;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+    background-color: white;
+    line-height: 1.5;
+    margin: 0;
 }
 
 .comments {

@@ -5,8 +5,7 @@ import { Comment } from './Comment';
 import styles from './CommentsSection.module.scss';
 
 function CommentSection({ commentIds }) {
-  const [comment, setComment] = useState([]);
-
+  const [comment, setComment] = useState(null);
   // const fetchComments = async (commentIds) => {
   //   try {
   //     const promises = await Promise.all(
@@ -23,21 +22,21 @@ function CommentSection({ commentIds }) {
   //     return console.error(error);
   //   }
   // };
-
   useEffect(() => {
     fetchComments(commentIds).then((data) => data && setComment(data));
   }, [commentIds]);
 
   return (
     <div className={styles.container}>
-      {commentIds.slice(0, commentIds.length).map(
-        (id, i) =>
-          id && (
-            <div key={id}>
-              <Comment commentId={comment[i]} />
-            </div>
-          )
-      )}
+      {comment &&
+        commentIds.slice(0, commentIds.length).map(
+          (id, i) =>
+            id && (
+              <div key={id}>
+                <Comment commentId={comment[i]} />
+              </div>
+            )
+        )}
     </div>
   );
 }

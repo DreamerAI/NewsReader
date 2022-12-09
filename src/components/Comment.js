@@ -14,7 +14,12 @@ export const Comment = ({ commentId }) => {
         <>
           <div>
             <p className={styles.comment__author}>
-              {commentId.by}&nbsp;[{commentId.id}]
+              {commentId.by}&nbsp;[{commentId.id}] &nbsp;&nbsp;
+              {new Date(commentId.time * 1000).toLocaleDateString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hourCycle: 'h23',
+              })}
             </p>
             <div
               dangerouslySetInnerHTML={createMarkup(commentId.text)}
