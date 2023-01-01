@@ -14,7 +14,7 @@ function App() {
   const newsIds = useSelector((state) => state.news.newsIds);
   const { status, error, darkMode } = useSelector((state) => state.news);
   const dispatch = useDispatch();
-  const theme = darkMode ? 'light' : 'dark';
+  const theme = darkMode ? 'dark' : 'light';
 
   const updateNews = useCallback(() => {
     setLoading((s) => s + 1);
