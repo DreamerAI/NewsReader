@@ -9,7 +9,7 @@ export const DarkMode = ({ darkMode }) => {
   return (
     <div>
       <button onClick={() => dispatch(toggleTheme(!darkMode))}>
-        {darkMode ? <DarkIcon /> : <LightIcon />}
+        {darkMode ? <LightIcon /> : <DarkIcon />}
       </button>
     </div>
   );
