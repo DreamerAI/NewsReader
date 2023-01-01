@@ -1,5 +1,6 @@
 import React from 'react';
-import CommentSection from './CommentsSection';
+import CommentSection from '../CommentsSection/CommentsSection';
+import { getPostTime } from '../../utils/helpers/getPostTime';
 
 import styles from './Comment.module.scss';
 
@@ -15,11 +16,7 @@ export const Comment = ({ commentId }) => {
           <div>
             <p className={styles.comment__author}>
               {commentId.by}&nbsp;[{commentId.id}] &nbsp;&nbsp;
-              {new Date(commentId.time * 1000).toLocaleDateString('en-US', {
-                hour: 'numeric',
-                minute: 'numeric',
-                hourCycle: 'h23',
-              })}
+              {getPostTime(commentId)}
             </p>
             <div
               dangerouslySetInnerHTML={createMarkup(commentId.text)}

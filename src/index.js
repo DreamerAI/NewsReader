@@ -1,13 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import store from './app/store';
-import Root from './Root';
+import store from './store/store';
+import Root from './components/Root/Root';
 import 'normalize.css';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ErrorPage from './errorpage';
-import News from './routes/news';
+import ErrorPage from './pages/errorpage';
+import News from './components/NewsPage/news';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

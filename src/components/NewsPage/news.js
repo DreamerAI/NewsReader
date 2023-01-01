@@ -1,44 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import CommentSection from '../components/CommentsSection';
-import { fetchNewsById } from '../slices/newsSlice';
+import DOMPurify from 'dompurify';
 
 import styles from './news.module.scss';
 
+import CommentSection from '../CommentsSection/CommentsSection';
+
+import { getPostTime } from '../../utils/helpers/getPostTime';
+import { fetchNewsById } from '../../services/fetchNewsById';
+
 function News() {
   const [commentsUpdate, setCommentsUpdate] = useState(1);
+  const { newsPage, error } = useSelector((state) => state.news);
+  const { newsId } = useParams();
+  const dispatch = useDispatch();
+
   const handleCommentsUpdate = () => {
     setCommentsUpdate(Math.random());
   };
 
-  const dispatch = useDispatch();
-  const { newsPage, error } = useSelector((state) => state.news);
-  const { newsId } = useParams();
-
   const createMarkup = (markup) => ({
-    __html: markup,
+    __html: DOMPurify.sanitize(markup),
   });
+
   useEffect(() => {
     dispatch(fetchNewsById(newsId));
   }, [dispatch, newsId]);
   return (
-    <div className={styles.container}>
+    <div className={styles.news}>
       {error && <h2> An error occured: {error}</h2>}
       {newsPage && (
         <>
           <div className={styles.headline}>
             <h1 className="news__title">{newsPage.title} </h1>
             <div className={styles.headline__info}>
-              <a href={newsPage.url}>Read more</a>
+              <a href={newsPage.url} className={newsPage.url ? null : styles.headline__url}>
+                Read more
+              </a>
 
               <p className={styles.author__name}>
                 By: {newsPage.by}&nbsp;[{newsPage.id}]&nbsp;&nbsp;
-                {new Date(newsPage.time * 1000).toLocaleDateString('en-US', {
-                  hour: 'numeric',
-                  minute: 'numeric',
-                  hourCycle: 'h23',
-                })}
+                {getPostTime(newsPage)}
               </p>
             </div>
           </div>

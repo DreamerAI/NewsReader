@@ -1,0 +1,23 @@
+@import "../../styles/variables.scss";
+
+.comment__text {
+    padding: 0;
+    margin: 0;
+    margin-top: 5px;
+    font-size: 0.875rem;
+    color: var(--text-color);
+
+    a {
+        font-weight: 500;
+        text-decoration: none;
+        color: var(--link-color);
+    }
+}
+
+.comment__author {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    margin: 0;
+    margin-top: 10px;
+}

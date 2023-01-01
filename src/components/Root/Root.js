@@ -1,30 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, NavLink } from 'react-router-dom';
-import { fetchNews, handleRefresh } from './slices/newsSlice';
+import { fetchNews } from '../../services/fetchNews';
+import { searchByLetters } from '../../utils/helpers/searchByLetters';
+import { DarkMode } from '../../utils/UI/ThemeToggle/ThemeToggle';
 
 import styles from './root.module.scss';
 
 function App() {
   const [searchInput, setSearchInput] = useState('');
+  const [loading, setLoading] = useState(0);
 
   const newsIds = useSelector((state) => state.news.newsIds);
-  const { status, error, newsRefreshed } = useSelector((state) => state.news);
+  const { status, error, darkMode } = useSelector((state) => state.news);
   const dispatch = useDispatch();
+  const theme = darkMode ? 'light' : 'dark';
+
+  const updateNews = useCallback(() => {
+    setLoading((s) => s + 1);
+  }, []);
 
   useEffect(() => {
-    dispatch(handleRefresh(newsRefreshed));
     dispatch(fetchNews());
     const interval = setInterval(() => {
       dispatch(fetchNews());
     }, 120000);
     return () => clearInterval(interval);
-  }, [newsRefreshed, dispatch]);
+  }, [dispatch, loading]);
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main} data-theme={theme}>
       <div className={styles.sidebar}>
-        <h1>News</h1>
+        <h1>Hacker News</h1>
         <div className={styles.nav__input}>
           <input
             id="q"
@@ -35,13 +42,11 @@ function App() {
             onChange={(e) => setSearchInput(e.target.value)}
           />
           <div>
-            <button
-              type="submit"
-              className="sidebar__btn--update"
-              onClick={() => dispatch(handleRefresh())}>
+            <button type="submit" onClick={updateNews}>
               Update
             </button>
           </div>
+          <DarkMode darkMode={darkMode} />
         </div>
         <nav className={styles.nav}>
           <ul>
@@ -49,10 +54,7 @@ function App() {
             {error && <h2> An error occured: {error}</h2>}
             {newsIds
               .filter((item) => {
-                return Object.values(item)
-                  .join('')
-                  .toLowerCase()
-                  .includes(searchInput.toLowerCase());
+                return searchByLetters(item, searchInput);
               })
               .map((newsId, index) => (
                 <li key={newsId.id}>

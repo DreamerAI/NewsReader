@@ -1,0 +1,14 @@
+@import "../../styles/variables.scss";
+
+.container {
+    border-left: 2px solid var(--accent-color);
+    max-width: 100%;
+    padding-left: 15px;
+    padding-bottom: 10px;
+    background: var(--secondary-color);
+
+    h4 {
+        margin: 0;
+        margin-top: 20px;
+    }
+}

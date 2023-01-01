@@ -1,4 +1,6 @@
-.container {
+@import "../../styles/variables.scss";
+
+.news {
     display: flex;
     flex-direction: column;
     padding: 2rem 2rem;
@@ -9,6 +11,7 @@
     padding: 0;
     margin: 0;
     h1 {
+        color: var(--text-color);
         margin-top: 0;
     }
 }
@@ -16,7 +19,7 @@
 .author__name {
     font-size: 1rem;
     font-weight: 500;
-    color: #3992ff;
+    color: var(--accent-color);
     margin: 0;
 }
 
@@ -27,10 +30,17 @@
     justify-content: center;
     align-items: flex-start;
     gap: 10px;
+    border-radius: var(--border-radius);
 
     .author__text {
         padding: 0;
         margin: 0;
+        color: var(--text-color);
+
+        a {
+            text-decoration: none;
+            color: var(--accent-color);
+        }
     }
 }
 
@@ -38,6 +48,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    a {
+        color: var(--accent-color);
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        padding: 0.5rem 0.75rem;
+        box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+        background-color: var(--button--bg-color);
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .headline__url {
+        color: var(--button-color-inactive);
+    }
 
     @media screen and (max-width: 720px) {
         display: block;
@@ -52,17 +77,6 @@
     }
 }
 
-.headline__info > a {
-    color: #3992ff;
-    text-decoration: none;
-    border-radius: 8px;
-    padding: 0.5rem 0.75rem;
-    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
-    background-color: white;
-    line-height: 1.5;
-    margin: 0;
-}
-
 .comments {
     margin: 10px 0;
     display: flex;
@@ -70,27 +84,27 @@
 
     h4 {
         margin: 0;
+        color: var(--text-color);
     }
 
     button {
         font-size: 0.9rem;
         font-family: inherit;
         border: none;
-        border-radius: 8px;
+        border-radius: var(--border-radius);
         padding: 0.5rem 0.75rem;
         box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
-        background-color: white;
+        background-color: var(--button--bg-color);
         line-height: 1.5;
         margin: 0;
         color: #3992ff;
         font-weight: 500;
         cursor: pointer;
         &:hover {
-            box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+            box-shadow: var(--box-shadow-active);
         }
 
         &:active {
-            box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.4);
             transform: translateY(1px);
         }
     }
