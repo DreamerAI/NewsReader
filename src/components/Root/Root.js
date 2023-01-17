@@ -31,7 +31,7 @@ function App() {
   return (
     <div className={styles.main} data-theme={theme}>
       <div className={styles.sidebar}>
-        <h1>Hacker News</h1>
+        <h1>ABC News Reader</h1>
         <div className={styles.nav__input}>
           <input
             id="q"
